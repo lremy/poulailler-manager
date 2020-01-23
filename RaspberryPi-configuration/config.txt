@@ -1,0 +1,6 @@
+# désactiver le bluetooth
+dtoverlay=pi3-disable-bt
+
+# désactiver les leds
+dtparam=act_led_trigger=none
+dtparam=act_led_activelow=on

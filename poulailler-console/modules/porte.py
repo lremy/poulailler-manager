@@ -1,5 +1,6 @@
 from datetime import datetime
 from RPi import GPIO
+from dateutil.tz import *
 import time
 import yaml
 
@@ -51,9 +52,9 @@ class Porte:
     def write_state(self,state):
         """ecrit la date courante dans le fichier de configuration pour l'etat donne"""
         if state == "open":
-            self.open_last_date = datetime.today().strftime("%Y-%m-%d %H:%M:%S")
+            self.open_last_date = datetime.now(tzlocal()).strftime("%Y-%m-%d %H:%M:%S")
         else:
-            self.close_last_date = datetime.today().strftime("%Y-%m-%d %H:%M:%S")
+            self.close_last_date = datetime.now(tzlocal()).strftime("%Y-%m-%d %H:%M:%S")
         self.write_config()
         
     

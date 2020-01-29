@@ -31,8 +31,10 @@ if __name__ == "__main__":
         action = sys.argv[1]
 
         if action == "open":
+            print("Porte en cours d'ouverture...")
             porte.open()
         elif action == "close":
+            print("Porte en cours de fermeture...")
             porte.close()
     
     # ephemeride sur la fablab à Villé

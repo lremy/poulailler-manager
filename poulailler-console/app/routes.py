@@ -26,6 +26,7 @@ def url_porte():
     img_etat_title = "Porte ouverte"
     img_action = "fermer"
     img_action_title = "Fermer la porte"
+    running = False
     if request.method == 'POST':
         # demande de modification de l'etat de la porte
         if porte.is_closed():
@@ -46,13 +47,15 @@ def url_porte():
         img_etat_title = "En cours de deplacement..."
         img_action = "en-cours"
         img_action_title = "En cours de deplacement..."
+        running = True
     template_data = {
+        'running' : running,
         'img_etat' : url_for("static", filename="img/porte-" + img_etat + ".png"),
         'img_etat_title' : img_etat_title,
         'img_action' : url_for("static", filename="img/porte-" + img_action + ".png"),
         'img_action_title' : img_action_title,
         'url_porte' : url_for("url_porte"),
         'last_status_date' : porte.last_status_date,
-        'last_status' : ("ouverture", "fermeture")[porte.last_status == "open"] 
+        'last_status' : ("fermeture", "ouverture")[porte.last_status == "open"] 
     }
     return render_template('porte.html', **template_data)

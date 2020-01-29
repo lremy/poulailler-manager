@@ -1,0 +1,25 @@
+<html>
+
+<head>
+    <title>Gestion du poulailler</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/poulailler.css')}}">
+    <script src="{{ url_for('static', filename='js/poulailler.js')}}"></script>
+</head>
+
+<body class="C($pri) M(0)">
+    <h1 class="Bgc($drk-pri) C($acc) M(0) P(20px) Ta(c)">Gestion du poulailler</h1>
+    <div class="D(f) Jc(c) Ai(fs)" id="modules"></div>
+    <script>
+        poulailler.add_module("{{ url_for('url_porte') }}", "porte");
+    </script>
+    <!--
+            Température / humidité
+            Abreuvoir
+            Lumière
+            luminosité
+            Alertes
+            caméra
+        -->
+</body>
+
+</html>

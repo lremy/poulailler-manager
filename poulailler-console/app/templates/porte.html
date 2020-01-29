@@ -1,0 +1,21 @@
+<h2 class="Bgc($pri) C($acc) M(0) P(10px) Ta(c)">Porte</h2>
+<div class="D(f) Jc(c) Ai(fs)">
+    <div class="W(45%) Ta(c)">
+        <span>Etat courant</span>
+        <br />
+        <img src='{{ url_for("static", filename="img/porte-" + img_etat + ".png") }}' alt="{{ img_etat }}" title="{{ img_etat }}" class="W(100%)">
+    </div>
+    <div class="W(45%) Ta(c)">
+        <span>Action</span>
+        <br /> {% if img_action == "en cours" %}
+        <img src='{{ url_for("static", filename="img/porte-enCours.png") }}' alt="en cours de deplacement..." title="en cours de deplacement..." class="W(100%)">
+        <script>
+            setTimeout(function() {
+                poulailler.refresh("porte", "{{url_for('url_porte')}}", "GET");
+            }, 3000);
+        </script>
+        {% else %}
+        <img src='{{ url_for("static", filename="img/porte-" + img_action + ".png") }}' onclick='javascript:poulailler.refresh("porte","{{ url_for("url_porte") }}","POST")' alt="{{ img_action }}" title="{{ img_action }}" class="W(100%) Cur(p)"> {% endif
+        %}
+    </div>
+</div>

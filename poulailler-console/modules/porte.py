@@ -9,7 +9,7 @@ class Porte:
     def __init__(self, stepper, pin_bas, pin_haut):
         """initialise le stepper de la porte et les pins des triggers haut/bas de la porte"""
         self.stepper = stepper
-        self.max_rotation = 500
+        self.max_rotation = 2500
         self.pin_haut = pin_haut
         self.pin_bas = pin_bas
         GPIO.setup(pin_haut,GPIO.IN,pull_up_down = GPIO.PUD_UP)
@@ -30,6 +30,7 @@ class Porte:
         while not (self.is_opened() or i == 0):
             self.stepper.forward_step()
             i = i - 1
+        self.stepper.stop_motor()
         self.write_state("open")
         
     def close(self):
@@ -38,6 +39,7 @@ class Porte:
         while not (self.is_closed() or i == 0):
             self.stepper.backward_step()
             i = i - 1
+        self.stepper.stop_motor()
         self.write_state("close")
 
     def read_config(self):
@@ -101,6 +103,10 @@ class Stepper:
         self.set_stepper(0, 1, 1, 0)
         self.set_stepper(1, 0, 1, 0)
     
+    def stop_motor(self):
+        """arrete le moteur"""
+        self.set_stepper(0, 0, 0, 0)
+
     def set_stepper(self, in1, in2, in3, in4):
         """definit les valeurs des pins pour changer la position du stepper"""
         GPIO.output(self.p_a1, in1)

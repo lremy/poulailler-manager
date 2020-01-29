@@ -22,6 +22,7 @@ def board():
 # module porte
 @app.route('/porte', methods= ['POST','GET'])
 def url_porte():
+    porte.read_config()
     img_etat = "ouverte"
     img_etat_title = "Porte ouverte"
     img_action = "fermer"

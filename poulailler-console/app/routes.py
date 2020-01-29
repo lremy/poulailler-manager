@@ -30,12 +30,12 @@ def url_porte():
     running = False
     if request.method == 'POST':
         # demande de modification de l'etat de la porte
-        if porte.is_closed():
-            # la porte est fermee
-            porte.open()
-        elif porte.is_opened():
+        if porte.is_opened():
             # la porte est ouverte
             porte.close()
+        else:
+            # la porte est fermee ou en etat instable
+            porte.open()
     if porte.is_closed():
         # la porte est fermee
         img_etat = "fermee"
@@ -46,8 +46,6 @@ def url_porte():
         # la porte n'est pas ouverte = porte en deplacement
         img_etat = "en-cours"
         img_etat_title = "En cours de deplacement..."
-        img_action = "en-cours"
-        img_action_title = "En cours de deplacement..."
         running = True
     template_data = {
         'running' : running,

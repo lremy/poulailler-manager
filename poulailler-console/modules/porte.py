@@ -44,13 +44,13 @@ class Porte:
         lig = fic.read()
         lig = lig.split(";")
         self.last_status = lig[0]
-        self.last_status_date = datetime(lig[1])
+        self.last_status_date = datetime.fromisoformat(lig[1])
         fic.close()
     
     def write_state(self,state):
         """écrit la date courante dans le fichier de configuration"""
         fic = open("conf/porte.conf", "w")
-        fic.write(state + ";" + datetime.today().form)
+        fic.write(state + ";" + datetime.today().strftime("%Y-%m-%d %H:%M:%S"))
         fic.close()
 
 class Stepper:

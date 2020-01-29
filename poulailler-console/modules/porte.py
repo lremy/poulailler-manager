@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import datetime
 from RPi import GPIO
 import time
 
@@ -28,7 +28,7 @@ class Porte:
         while not (self.is_opened() or i == 0):
             self.stepper.forward_step()
             i = i - 1
-        self.write_state()
+        self.write_state("open")
         
     def close(self):
         """ferme la porte"""
@@ -36,18 +36,21 @@ class Porte:
         while not (self.is_closed() or i == 0):
             self.stepper.backward_step()
             i = i - 1
-        self.write_state()
+        self.write_state("close")
 
     def read_state(self):
         """lit le fichier de configuration contenant la date du dernier etat stable (ouverte/fermee)"""
         fic = open("conf/porte.conf", "r")
-        self.last_state = fic.read()
+        lig = fic.read()
+        lig = lig.split(";")
+        self.last_status = lig[0]
+        self.last_status_date = datetime(lig[1])
         fic.close()
     
-    def write_state(self):
+    def write_state(self,state):
         """écrit la date courante dans le fichier de configuration"""
         fic = open("conf/porte.conf", "w")
-        fic.write(date.today().isoformat())
+        fic.write(state + ";" + datetime.today().form)
         fic.close()
 
 class Stepper:

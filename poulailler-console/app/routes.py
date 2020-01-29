@@ -51,6 +51,8 @@ def url_porte():
         'img_etat_title' : img_etat_title,
         'img_action' : url_for("static", filename="img/porte-" + img_action + ".png"),
         'img_action_title' : img_action_title,
-        'url_porte' : url_for("url_porte")
+        'url_porte' : url_for("url_porte"),
+        'last_status_date' : porte.last_status_date,
+        'last_status' : ("ouverture", "fermeture")[porte.last_status == "open"] 
     }
     return render_template('porte.html', **template_data)

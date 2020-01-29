@@ -1,6 +1,7 @@
 from datetime import datetime
 from RPi import GPIO
 import time
+import yaml
 
 class Porte:
     """classe de pilotage de la porte de poulailler"""
@@ -12,7 +13,7 @@ class Porte:
         self.pin_bas = pin_bas
         GPIO.setup(pin_haut,GPIO.IN,pull_up_down = GPIO.PUD_UP)
         GPIO.setup(pin_bas,GPIO.IN,pull_up_down = GPIO.PUD_UP)
-        self.read_state()
+        self.read_config()
 
     def is_opened(self):
         """teste si la porte est ouverte"""
@@ -38,20 +39,38 @@ class Porte:
             i = i - 1
         self.write_state("close")
 
-    def read_state(self):
-        """lit le fichier de configuration contenant la date du dernier etat stable (ouverte/fermee)"""
-        fic = open("conf/porte.conf", "r")
-        lig = fic.read()
-        lig = lig.split(";")
-        self.last_status = lig[0]
-        self.last_status_date = datetime.fromisoformat(lig[1])
-        fic.close()
+    def read_config(self):
+        """lit le fichier de configuration"""
+        with open("conf/porte.conf", 'r') as ymlfile:
+            cfg = yaml.load(ymlfile, Loader = yaml.Loader)
+        self.open_last_date = cfg['open']['last_date']
+        self.open_next_date = cfg['open']['next_date']
+        self.close_last_date = cfg['close']['last_date']
+        self.close_next_date = cfg['close']['next_date']
     
     def write_state(self,state):
-        """écrit la date courante dans le fichier de configuration"""
-        fic = open("conf/porte.conf", "w")
-        fic.write(state + ";" + datetime.today().strftime("%Y-%m-%d %H:%M:%S"))
-        fic.close()
+        """ecrit la date courante dans le fichier de configuration pour l'etat donne"""
+        if state == "open":
+            self.open_last_date = datetime.today().strftime("%Y-%m-%d %H:%M:%S")
+        else:
+            self.close_last_date = datetime.today().strftime("%Y-%m-%d %H:%M:%S")
+        self.write_config()
+        
+    
+    def write_config(self):
+        """ecrit la configuration dans le fichier de configuration"""
+        cfg = {
+            'open':{
+                'last_date':self.open_last_date,
+                'next_date':self.open_next_date
+            },
+            'close':{
+                'last_date':self.close_last_date,
+                'next_date':self.close_next_date
+            }
+        }
+        with open("conf/porte.conf", 'w') as ymlfile:
+            yaml.dump(cfg, ymlfile, Dumper = yaml.Dumper)
 
 class Stepper:
     """classe de pilotage d'un Stepper"""

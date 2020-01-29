@@ -23,7 +23,9 @@ def board():
 @app.route('/porte', methods= ['POST','GET'])
 def url_porte():
     img_etat = "ouverte"
+    img_etat_title = "Porte ouverte"
     img_action = "fermer"
+    img_action_title = "Fermer la porte"
     if request.method == 'POST':
         # demande de modification de l'etat de la porte
         if porte.is_closed():
@@ -35,13 +37,20 @@ def url_porte():
     if porte.is_closed():
         # la porte est fermee
         img_etat = "fermee"
+        img_etat_title = "Porte fermee"
         img_action = "ouvrir"
+        img_action_title = "Ouvrir la porte"
     elif not porte.is_opened():
         # la porte n'est pas ouverte = porte en deplacement
-        img_etat = "enCours"
-        img_action = "en cours"
+        img_etat = "en-cours"
+        img_etat_title = "En cours de deplacement..."
+        img_action = "en-cours"
+        img_action_title = "En cours de deplacement..."
     template_data = {
-        'img_etat' : img_etat,
-        'img_action' : img_action
+        'img_etat' : url_for("static", filename="img/porte-" + img_etat + ".png"),
+        'img_etat_title' : img_etat_title,
+        'img_action' : url_for("static", filename="img/porte-" + img_action + ".png"),
+        'img_action_title' : img_action_title,
+        'url_porte' : url_for("url_porte")
     }
     return render_template('porte.html', **template_data)

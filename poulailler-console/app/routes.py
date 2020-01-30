@@ -3,6 +3,7 @@ from app import app
 from RPi import GPIO
 from modules.porte import Porte, Stepper
 from modules.abreuvoir import Abreuvoir
+from modules.temperature import Temperature
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
@@ -10,6 +11,8 @@ GPIO.setwarnings(False)
 stepper = Stepper(5,6,13,19)
 porte = Porte(stepper,23,24)
 abreuvoir = Abreuvoir(17,27,22)
+temp_ext = Temperature("28-05167380edff")
+temp_int = Temperature("28-051680729dff")
 
 # page par defaut, redirection vers la page principale
 @app.route('/')
@@ -75,3 +78,12 @@ def url_abreuvoir():
         'last_level_label' : level_labels[abreuvoir.last_level]
     }
     return render_template('abreuvoir.html', **template_data)
+
+# module temperature
+@app.route('/temperature', methods= ['GET'])
+def url_temperature():
+    template_data = {
+        'temp_int' : temp_int.read_temperature(),
+        'temp_ext' : temp_ext.read_temperature()
+    }
+    return render_template('temperature.html', **template_data)

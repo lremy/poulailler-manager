@@ -6,7 +6,7 @@ from modules.porte import Porte, Stepper
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 
-stepper = Stepper(3,4,5,6)
+stepper = Stepper(5,6,13,19)
 porte = Porte(stepper,23,24)
 
 # page par defaut, redirection vers la page principale
@@ -60,3 +60,4 @@ def url_porte():
         'close_next_date' : porte.close_next_date,
     }
     return render_template('porte.html', **template_data)
+

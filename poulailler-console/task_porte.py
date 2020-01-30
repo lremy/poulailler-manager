@@ -20,7 +20,7 @@ if __name__ == "__main__":
     GPIO.setmode(GPIO.BCM)
     GPIO.setwarnings(False)
 
-    stepper = Stepper(3,4,5,6)
+    stepper = Stepper(5,6,13,19)
     porte = Porte(stepper,23,24)
 
     cmd_open = '/home/pi/poulailler-console/porte_auto.sh open'

@@ -43,6 +43,10 @@
     display: inline-block;
 }
 
+.Fld\(cr\) {
+    flex-direction: column-reverse;
+}
+
 .Ai\(fs\) {
     align-items: flex-start;
 }
@@ -61,6 +65,34 @@
 
 .Fz\(30px\) {
     font-size: 30px;
+}
+
+.H\(140px\) {
+    height: 140px;
+}
+
+.H\(150px\) {
+    height: 150px;
+}
+
+.H\(20px\) {
+    height: 20px;
+}
+
+.H\(80px\) {
+    height: 80px;
+}
+
+.Lh\(140px\) {
+    line-height: 140px;
+}
+
+.Lh\(20px\) {
+    line-height: 20px;
+}
+
+.Lh\(80px\) {
+    line-height: 80px;
 }
 
 .M\(0\) {

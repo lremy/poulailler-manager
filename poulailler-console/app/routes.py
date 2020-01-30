@@ -2,12 +2,14 @@ from flask import render_template, flash, redirect, url_for, request
 from app import app
 from RPi import GPIO
 from modules.porte import Porte, Stepper
+from modules.abreuvoir import Abreuvoir
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 
 stepper = Stepper(5,6,13,19)
 porte = Porte(stepper,23,24)
+abreuvoir = Abreuvoir(17,27,22)
 
 # page par defaut, redirection vers la page principale
 @app.route('/')
@@ -61,3 +63,15 @@ def url_porte():
     }
     return render_template('porte.html', **template_data)
 
+# module abreuvoir
+@app.route('/abreuvoir', methods= ['GET'])
+def url_abreuvoir():
+    abreuvoir.read_config()
+    levels = [20,80,140]
+    level_labels = ['bas','milieu','haut']
+    template_data = {
+        'last_level' : levels[abreuvoir.last_level],
+        'last_level_date' : abreuvoir.last_level_date,
+        'last_level_label' : level_labels[abreuvoir.last_level]
+    }
+    return render_template('abreuvoir.html', **template_data)

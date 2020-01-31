@@ -3,10 +3,7 @@ Description=Serveur web poulailler
 After=network.target
 
 [Service]
-ExecStart=poulailler-service.sh
-WorkingDirectory=/home/pi/poulailler-console
-StandardOutput=inherit
-StandardError=inherit
+ExecStart=/home/pi/poulailler-console/poulailler-service.sh
 Restart=always
 User=pi
 

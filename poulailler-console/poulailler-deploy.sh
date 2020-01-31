@@ -2,4 +2,9 @@
 
 cd /home/pi/poulailler-console
 
-ln -s poulailler.service /etc/systemd/system/poulailler.service
+chmod +x poulailler-service.sh
+
+cp poulailler.service /etc/systemd/system
+
+systemctl enable poulailler.service
+systemctl start poulailler.service

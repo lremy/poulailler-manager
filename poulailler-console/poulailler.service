@@ -1,0 +1,14 @@
+[Unit]
+Description=Serveur web poulailler
+After=network.target
+
+[Service]
+ExecStart=poulailler-service.sh
+WorkingDirectory=/home/pi/poulailler-console
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+User=pi
+
+[Install]
+WantedBy=multi-user.target

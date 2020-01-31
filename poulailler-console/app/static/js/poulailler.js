@@ -8,7 +8,7 @@ var poulailler = {
             "id": id
         })
         var e = document.createElement("div");
-        e.setAttribute("class", "Miw(200px) Bd Bdc($pri) Mih(80px) M(5px)");
+        e.setAttribute("class", "Miw(300px) Bd Bdc($pri) Mih(80px) M(5px)");
         e.setAttribute("id", id);
         document.getElementById("modules").appendChild(e);
     },

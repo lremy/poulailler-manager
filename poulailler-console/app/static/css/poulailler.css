@@ -47,6 +47,10 @@
     flex-direction: column-reverse;
 }
 
+.Fxf\(w\) {
+    flex-flow: wrap;
+}
+
 .Ai\(fs\) {
     align-items: flex-start;
 }
@@ -107,12 +111,8 @@
     min-height: 80px;
 }
 
-.Miw\(200px\) {
-    min-width: 200px;
-}
-
-.Miw\(20px\) {
-    min-width: 20px;
+.Miw\(300px\) {
+    min-width: 300px;
 }
 
 .P\(10px\) {
@@ -121,6 +121,10 @@
 
 .P\(20px\) {
     padding: 20px;
+}
+
+.P\(5px\) {
+    padding: 5px;
 }
 
 .Ta\(c\) {

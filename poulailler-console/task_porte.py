@@ -1,6 +1,7 @@
 import sys
 from modules.porte import Porte,Stepper
 from modules.ephemeride import Sun
+from modules.conf import read_conf
 from crontab import CronTab
 from datetime import datetime, timedelta
 from dateutil.tz import *
@@ -20,8 +21,10 @@ if __name__ == "__main__":
     GPIO.setmode(GPIO.BCM)
     GPIO.setwarnings(False)
 
-    stepper = Stepper(5,6,13,19)
-    porte = Porte(stepper,23,24)
+    CFG = read_conf("global")
+
+    stepper = Stepper(CFG['PORTE_STEPPER_1'],CFG['PORTE_STEPPER_2'],CFG['PORTE_STEPPER_3'],CFG['PORTE_STEPPER_4'])
+    porte = Porte(stepper,CFG['PORTE_PIN_BAS'],CFG['PORTE_PIN_HAUT'])
 
     cmd_open = '/home/pi/poulailler-console/porte_auto.sh open'
     cmd_close = '/home/pi/poulailler-console/porte_auto.sh close'
@@ -37,8 +40,8 @@ if __name__ == "__main__":
             print("Porte en cours de fermeture...")
             porte.close()
     
-    # ephemeride sur la fablab à Villé
-    s=Sun(lat=48.343438,long=7.304049)
+    # ephemeride sur la localisation du poulailler
+    s=Sun(lat=CFG['LATITUDE'],long=CFG['LONGITUDE'])
 
     # prochain lever de soleil
     print("Definition du prochain lever de soleil...")

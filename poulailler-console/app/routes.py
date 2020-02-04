@@ -4,15 +4,18 @@ from RPi import GPIO
 from modules.porte import Porte, Stepper
 from modules.abreuvoir import Abreuvoir
 from modules.temperature import Temperature
+from modules.conf import read_conf
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 
-stepper = Stepper(5,6,13,19)
-porte = Porte(stepper,23,24)
-abreuvoir = Abreuvoir(17,27,22)
-temp_ext = Temperature("28-05167380edff")
-temp_int = Temperature("28-051680729dff")
+CFG = read_conf("global")
+
+stepper = Stepper(CFG['PORTE_STEPPER_1'],CFG['PORTE_STEPPER_2'],CFG['PORTE_STEPPER_3'],CFG['PORTE_STEPPER_4'])
+porte = Porte(stepper,CFG['PORTE_PIN_BAS'],CFG['PORTE_PIN_HAUT'])
+abreuvoir = Abreuvoir(CFG['ABREUVOIR_PIN_VIDE'],CFG['ABREUVOIR_PIN_MEDIUM'],CFG['ABREUVOIR_PIN_PLEIN'])
+temp_ext = Temperature(CFG['TEMP_ID_EXT'])
+temp_int = Temperature(CFG['TEMP_ID_INT'])
 
 # page par defaut, redirection vers la page principale
 @app.route('/')

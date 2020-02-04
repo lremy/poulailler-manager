@@ -1,16 +1,13 @@
-<h2 class="Bgc($pri) C($acc) M(0) P(10px) Ta(c)">Porte</h2>
-<div class="P(5px)">
-    <div class="Ta(l)">
-        Dernière ouverture : {{ open_last_date }}<br/> Prochaine ouverture : {{ open_next_date }}<br/> Dernière fermeture : {{ close_last_date }}<br/> Prochaine fermeture : {{ close_next_date }}
-    </div>
-    <div class="Ta(c)">
-        <img src='{{ img_etat }}' alt="{{ img_etat_title }}" title="{{ img_action_title }}" class="W(100px) Cur(p)" onmouseover='javascript:this.src="{{ img_action }}";this.alt="{{ img_action_title }}";' onmouseout='javascript:this.src="{{ img_etat }}";this.alt="{{ img_etat_title }}";'
-            onclick='javascript:poulailler.refresh("porte","{{ url_porte }}","POST")'> {% if running %}
-        <script>
-            setTimeout(function() {
-                poulailler.refresh("porte", "{{ url_porte }}", "GET");
-            }, 3000);
-        </script>
-        {% endif %}
-    </div>
+<div class="Ta(l)">
+    Dernière ouverture : {{ open_last_date }}<br/> Prochaine ouverture : {{ open_next_date }}<br/> Dernière fermeture : {{ close_last_date }}<br/> Prochaine fermeture : {{ close_next_date }}
+</div>
+<div class="Ta(c)">
+    <img src='{{ img_etat }}' alt="{{ img_etat_title }}" title="{{ img_action_title }}" class="W(100px) Cur(p)" onmouseover='javascript:this.src="{{ img_action }}";this.alt="{{ img_action_title }}";' onmouseout='javascript:this.src="{{ img_etat }}";this.alt="{{ img_etat_title }}";'
+        onclick='javascript:poulailler.refresh("porte","{{ url_porte }}","POST")'> {% if running %}
+    <script>
+        setTimeout(function() {
+            poulailler.refresh("porte", "{{ url_porte }}", "GET");
+        }, 3000);
+    </script>
+    {% endif %}
 </div>

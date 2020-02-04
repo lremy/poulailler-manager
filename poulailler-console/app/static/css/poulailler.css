@@ -115,6 +115,22 @@
     min-width: 300px;
 }
 
+.T\(16px\) {
+    top: 16px;
+}
+
+.T\(2px\) {
+    top: 2px;
+}
+
+.End\(10px\) {
+    right: 10px;
+}
+
+.End\(2px\) {
+    right: 2px;
+}
+
 .P\(10px\) {
     padding: 10px;
 }
@@ -125,6 +141,14 @@
 
 .P\(5px\) {
     padding: 5px;
+}
+
+.Pos\(a\) {
+    position: absolute;
+}
+
+.Pos\(r\) {
+    position: relative;
 }
 
 .Ta\(c\) {

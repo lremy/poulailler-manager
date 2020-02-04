@@ -1,0 +1,9 @@
+/home/pi/poulailler-console/logs/poulailler-console.log {
+	daily
+	copytruncate
+	rotate 7
+	compress
+	delaycompress
+	notifempty
+	nomail
+}

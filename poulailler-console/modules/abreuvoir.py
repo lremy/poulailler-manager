@@ -1,13 +1,13 @@
 from datetime import datetime
 from RPi import GPIO
 from dateutil.tz import *
-import yaml
+from modules.conf import read_conf, write_conf
 
 class Abreuvoir:
     """classe de pilotage de l'abreuvoir du poulailler"""
     def __init__(self, pin_bas, pin_milieu, pin_haut):
         """initialise les pins des triggers bas/milieu/haut de l'abreuvoir"""
-        self.CONF_FILE = 'conf/abreuvoir.conf'
+        self.CONF_FILE = 'abreuvoir'
         self.pin_bas = pin_bas
         self.pin_milieu = pin_milieu
         self.pin_haut = pin_haut
@@ -34,8 +34,7 @@ class Abreuvoir:
 
     def read_config(self):
         """lit le fichier de configuration"""
-        with open(self.CONF_FILE, 'r') as ymlfile:
-            cfg = yaml.load(ymlfile, Loader = yaml.Loader)
+        cfg = read_conf(self.CONF_FILE)
         self.last_level = cfg['last_level']
         self.last_level_date = cfg['last_level_date']
     
@@ -51,5 +50,4 @@ class Abreuvoir:
             'last_level':self.last_level,
             'last_level_date':self.last_level_date
         }
-        with open(self.CONF_FILE, 'w') as ymlfile:
-            yaml.dump(cfg, ymlfile, Dumper = yaml.Dumper)
+        write_conf(self.CONF_FILE,cfg)

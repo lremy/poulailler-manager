@@ -2,12 +2,13 @@ from datetime import datetime
 from RPi import GPIO
 from dateutil.tz import *
 import time
-import yaml
+from modules.conf import read_conf, write_conf
 
 class Porte:
     """classe de pilotage de la porte de poulailler"""
     def __init__(self, stepper, pin_bas, pin_haut):
         """initialise le stepper de la porte et les pins des triggers haut/bas de la porte"""
+        self.CONF_FILE = "porte"
         self.stepper = stepper
         self.max_rotation = 2500
         self.pin_haut = pin_haut
@@ -44,8 +45,7 @@ class Porte:
 
     def read_config(self):
         """lit le fichier de configuration"""
-        with open("conf/porte.conf", 'r') as ymlfile:
-            cfg = yaml.load(ymlfile, Loader = yaml.Loader)
+        cfg = read_conf(self.CONF_FILE)
         self.open_last_date = cfg['open']['last_date']
         self.open_next_date = cfg['open']['next_date']
         self.close_last_date = cfg['close']['last_date']
@@ -72,8 +72,7 @@ class Porte:
                 'next_date':self.close_next_date
             }
         }
-        with open("conf/porte.conf", 'w') as ymlfile:
-            yaml.dump(cfg, ymlfile, Dumper = yaml.Dumper)
+        write_conf(cfg,self.CONF_FILE)
 
 class Stepper:
     """classe de pilotage d'un Stepper"""

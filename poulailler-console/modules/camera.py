@@ -21,11 +21,12 @@ class Camera():
         self.last_capture = date.strftime("%Y-%m-%d %H:%M:%S")
         self.last_image = self.capture_path + "camera-{}.jpg".format(date.strftime("%Y%m%d-%H%M%S"))
         self.camera.capture("app/" + self.last_image)
+        self.write_config()
+        # supprime la plus ancienne image s'il y a plus de 5 images
         images = list(f for f in listdir("app/" + self.capture_path) if f.startswith("camera-"))
         images.sort()
         if len(images) > 5:
             remove("app/" + self.capture_path + images[0])
-        self.write_config()
         return self.last_image
 
     def read_config(self):

@@ -4,6 +4,7 @@ from RPi import GPIO
 from modules.porte import Porte, Stepper
 from modules.abreuvoir import Abreuvoir
 from modules.temperature import Temperature
+from modules.camera import Camera
 from modules.conf import read_conf
 
 GPIO.setmode(GPIO.BCM)
@@ -16,6 +17,7 @@ porte = Porte(stepper,CFG['PORTE_PIN_BAS'],CFG['PORTE_PIN_HAUT'])
 abreuvoir = Abreuvoir(CFG['ABREUVOIR_PIN_VIDE'],CFG['ABREUVOIR_PIN_MEDIUM'],CFG['ABREUVOIR_PIN_PLEIN'])
 temp_ext = Temperature(CFG['TEMP_ID_EXT'])
 temp_int = Temperature(CFG['TEMP_ID_INT'])
+camera = Camera(CFG['CAMERA_WIDTH'],CFG['CAMERA_HEIGHT'])
 
 # page par defaut, redirection vers la page principale
 @app.route('/')
@@ -90,3 +92,13 @@ def url_temperature():
         'temp_ext' : temp_ext.read_temperature()
     }
     return render_template('temperature.html', **template_data)
+
+# module camera
+@app.route('/camera', methods= ['GET'])
+def url_camera():
+    capture_url = camera.capture()
+    template_data = {
+        'last_capture' : camera.last_capture,
+        'capture_url' : capture_url
+    }
+    return render_template('camera.html', **template_data)

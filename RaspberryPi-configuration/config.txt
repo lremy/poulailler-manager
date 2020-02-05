@@ -4,3 +4,6 @@ dtoverlay=pi3-disable-bt
 # désactiver les leds
 dtparam=act_led_trigger=none
 dtparam=act_led_activelow=on
+
+# activer le module 1-wire pour les capteurs de température
+dtoverlay=w1-gpio

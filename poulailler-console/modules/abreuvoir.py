@@ -8,7 +8,8 @@ class Abreuvoir:
     """classe de pilotage de l'abreuvoir du poulailler"""
     def __init__(self, pin_bas, pin_milieu, pin_haut):
         """initialise les pins des triggers bas/milieu/haut de l'abreuvoir"""
-        self.CONF_FILE = 'abreuvoir'
+        self.module_name = "abreuvoir"
+        self.CONF_FILE = self.module_name
         self.pin_bas = pin_bas
         self.pin_milieu = pin_milieu
         self.pin_haut = pin_haut
@@ -26,16 +27,15 @@ class Abreuvoir:
     
     def callback_interrupt(self,bouton):
         """callback d'interruption"""
-        type_alerte = "abreuvoir"
         if bouton == self.pin_bas:
             if self.last_level != 0: # le niveau d'eau n'était pas bas
                 self.write_level(0)
                 alerteur = Alerteur()
-                alerteur.add_alert(type_alerte, "Niveau d'eau faible.")
+                alerteur.add_alert(self.module_name, "Niveau d'eau faible.")
         else:
             if self.last_level == 0: # le niveau n'est plus bas
                 alerteur = Alerteur()
-                alerteur.remove_alert(type_alerte)
+                alerteur.remove_alert(self.module_name)
             if bouton == self.pin_milieu:
                 self.write_level(1)
             else:

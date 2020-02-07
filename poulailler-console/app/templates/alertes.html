@@ -1,0 +1,9 @@
+<div class="Ta(l)">
+    {% if alertes|length > 0 %}
+    <ul>
+        {% for key,value in alertes.items() %}
+        <li>{{ key }} : {{ value }}</li>
+        {% endfor %}
+    </ul>
+    {% else %} Aucune alerte. {% endif %}
+</div>

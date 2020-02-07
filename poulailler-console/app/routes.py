@@ -6,6 +6,7 @@ from modules.abreuvoir import Abreuvoir
 from modules.temperature import Temperature
 from modules.camera import Camera
 from modules.conf import read_conf
+from modules.alerte import Alerteur
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
@@ -102,3 +103,12 @@ def url_camera():
         'capture_url' : capture_url
     }
     return render_template('camera.html', **template_data)
+
+# module alertes
+@app.route('/alertes', methods= ['GET'])
+def url_alertes():
+    template_data = {
+        'alertes' : Alerteur().alertes
+    }
+    return render_template('alertes.html', **template_data)
+

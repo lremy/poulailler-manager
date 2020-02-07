@@ -34,9 +34,9 @@ class Porte:
             self.stepper.forward_step()
             i = i - 1
         if i == 0: # la porte n'est pas arrivee jusqu'en haut
-            Alert().add_alert(self.module_name,"La porte n'est pas ouverte entierement.")
+            Alerteur().add_alert(self.module_name,"La porte n'est pas ouverte entierement.")
         else:
-            Alert().remove_alert(self.module_name)
+            Alerteur().remove_alert(self.module_name)
         self.stepper.stop_motor()
         self.write_state("open")
         
@@ -47,9 +47,9 @@ class Porte:
             self.stepper.backward_step()
             i = i - 1
         if i == 0: # la porte n'est pas arrivee jusqu'en bas
-            Alert().add_alert(self.module_name,"La porte n'est pas fermee entierement.")
+            Alerteur().add_alert(self.module_name,"La porte n'est pas fermee entierement.")
         else:
-            Alert().remove_alert(self.module_name)
+            Alerteur().remove_alert(self.module_name)
         self.stepper.stop_motor()
         self.write_state("close")
 

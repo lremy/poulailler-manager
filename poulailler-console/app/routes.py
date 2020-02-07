@@ -41,12 +41,12 @@ def url_porte():
     running = False
     if request.method == 'POST':
         # demande de modification de l'etat de la porte
-        if porte.is_opened():
-            # la porte est ouverte
-            porte.close()
-        else:
-            # la porte est fermee ou en etat instable
+        if porte.is_closed():
+            # la porte est fermee
             porte.open()
+        else:
+            # la porte est ouverte ou en etat instable
+            porte.close()
     if porte.is_closed():
         # la porte est fermee
         img_etat = "fermee"

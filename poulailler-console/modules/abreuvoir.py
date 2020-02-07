@@ -2,6 +2,7 @@ from datetime import datetime
 from RPi import GPIO
 from dateutil.tz import *
 from modules.conf import read_conf, write_conf
+from modules.alerte import Alerteur
 
 class Abreuvoir:
     """classe de pilotage de l'abreuvoir du poulailler"""
@@ -26,7 +27,10 @@ class Abreuvoir:
     def callback_interrupt(self,bouton):
         """callback d'interruption"""
         if bouton == self.pin_bas:
-            self.write_level(0)
+            if self.last_level != 0:
+                self.write_level(0)
+                alerteur = Alerteur()
+                alerteur.send_alert("Niveau d'eau faible dans l'abreuvoir.")
         elif bouton == self.pin_milieu:
             self.write_level(1)
         else:

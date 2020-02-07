@@ -26,15 +26,16 @@ class Abreuvoir:
     
     def callback_interrupt(self,bouton):
         """callback d'interruption"""
+        type_alerte = "abreuvoir"
         if bouton == self.pin_bas:
             if self.last_level != 0: # le niveau d'eau n'était pas bas
                 self.write_level(0)
                 alerteur = Alerteur()
-                alerteur.add_alert("abreuvoir", "Niveau d'eau faible.")
+                alerteur.add_alert(type_alerte, "Niveau d'eau faible.")
         else:
             if self.last_level == 0: # le niveau n'est plus bas
                 alerteur = Alerteur()
-                alerteur.remove_alert("abreuvoir", "Niveau d'eau faible.")
+                alerteur.remove_alert(type_alerte)
             if bouton == self.pin_milieu:
                 self.write_level(1)
             else:

@@ -18,7 +18,7 @@ class Alerteur():
                if device['pushable']:
                    note = pb.pushNote(device["iden"], self.title + " - " + type, message)
 
-    def remove_alert(self, type, message):
+    def remove_alert(self, type):
         """supprime une alerte"""
         if type in self.alertes:
             del self.alertes[type]

@@ -27,14 +27,18 @@ class Abreuvoir:
     def callback_interrupt(self,bouton):
         """callback d'interruption"""
         if bouton == self.pin_bas:
-            if self.last_level != 0:
+            if self.last_level != 0: # le niveau d'eau n'était pas bas
                 self.write_level(0)
                 alerteur = Alerteur()
-                alerteur.send_alert("Niveau d'eau faible dans l'abreuvoir.")
-        elif bouton == self.pin_milieu:
-            self.write_level(1)
+                alerteur.add_alert("abreuvoir", "Niveau d'eau faible.")
         else:
-            self.write_level(2)
+            if self.last_level == 0: # le niveau n'est plus bas
+                alerteur = Alerteur()
+                alerteur.remove_alert("abreuvoir", "Niveau d'eau faible.")
+            if bouton == self.pin_milieu:
+                self.write_level(1)
+            else:
+                self.write_level(2)
 
     def read_config(self):
         """lit le fichier de configuration"""

@@ -7,21 +7,21 @@ class Alerteur():
         self.CONF_FILE = "alerteur"
         self.read_config()
     
-    def add_alert(self, type, message):
+    def add_alert(self, module, message):
         """ajoute une alerte"""
-        if not type in self.alertes:
-            self.alertes[type] = message
+        if (not module in self.alertes) or self.alertes[module] != message:
+            self.alertes[module] = message
             self.write_config()
             pb = PushBullet(self.api_key)
             devices = pb.getDevices()
             for device in devices:
                if device['pushable']:
-                   note = pb.pushNote(device["iden"], self.title + " - " + type, message)
+                   note = pb.pushNote(device["iden"], self.title + " - " + module, message)
 
-    def remove_alert(self, type):
+    def remove_alert(self, module):
         """supprime une alerte"""
-        if type in self.alertes:
-            del self.alertes[type]
+        if module in self.alertes:
+            del self.alertes[module]
             self.write_config()
 
     def read_config(self):

@@ -3,12 +3,14 @@ from RPi import GPIO
 from dateutil.tz import *
 import time
 from modules.conf import read_conf, write_conf
+from modules.alerte import Alerteur
 
 class Porte:
     """classe de pilotage de la porte de poulailler"""
     def __init__(self, stepper, pin_bas, pin_haut):
         """initialise le stepper de la porte et les pins des triggers haut/bas de la porte"""
-        self.CONF_FILE = "porte"
+        self.module_name = "porte"
+        self.CONF_FILE = self.module_name
         self.stepper = stepper
         self.max_rotation = 2500
         self.pin_haut = pin_haut
@@ -31,6 +33,10 @@ class Porte:
         while not (self.is_opened() or i == 0):
             self.stepper.forward_step()
             i = i - 1
+        if i == 0: # la porte n'est pas arrivee jusqu'en haut
+            Alert().add_alert(self.module_name,"La porte n'est pas ouverte entierement.")
+        else:
+            Alert().remove_alert(self.module_name)
         self.stepper.stop_motor()
         self.write_state("open")
         
@@ -40,6 +46,10 @@ class Porte:
         while not (self.is_closed() or i == 0):
             self.stepper.backward_step()
             i = i - 1
+        if i == 0: # la porte n'est pas arrivee jusqu'en bas
+            Alert().add_alert(self.module_name,"La porte n'est pas fermee entierement.")
+        else:
+            Alert().remove_alert(self.module_name)
         self.stepper.stop_motor()
         self.write_state("close")
 

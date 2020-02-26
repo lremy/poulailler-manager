@@ -1,6 +1,6 @@
 Flask==1.1.1
-RPi.GPIO=0.7.0
-python-dotenv=0.10.5
-PyYAML=5.3
-python-crontab=2.4.0
-picamera=1.13
+RPi.GPIO==0.7.0
+python-dotenv==0.10.5
+PyYAML==5.3
+python-crontab==2.4.0
+picamera==1.13

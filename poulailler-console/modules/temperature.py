@@ -14,7 +14,7 @@ class Temperature:
 
     def read_data(self):
         """lit les données de la sonde"""
-        if not self.is_activated():
+        if not self.activated:
             return None
         fic = open(self.path)
         content = fic.read(100)
@@ -23,7 +23,7 @@ class Temperature:
 
     def read_temperature(self):
         """lit la temperature de la sonde"""
-        if not self.is_activated():
+        if not self.activated:
             return None
         content = self.read_data()
         lig = content.split("\n")[1]

@@ -82,7 +82,7 @@ class Porte:
                 'next_date':self.close_next_date
             }
         }
-        write_conf(cfg,self.CONF_FILE)
+        write_conf(self.CONF_FILE,cfg)
 
 class Stepper:
     """classe de pilotage d'un Stepper"""

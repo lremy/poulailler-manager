@@ -1,4 +1,4 @@
-from pushbullet.pushbullet import PushBullet
+from pushbullet import PushBullet
 from modules.conf import read_conf, write_conf
 
 class Alerteur():
@@ -13,10 +13,7 @@ class Alerteur():
             self.alertes[module] = message
             self.write_config()
             pb = PushBullet(self.api_key)
-            devices = pb.getDevices()
-            for device in devices:
-               if device['pushable']:
-                   note = pb.pushNote(device["iden"], self.title + " - " + module, message)
+            note = pb.push_note(self.title + " - " + module, message)
 
     def remove_alert(self, module):
         """supprime une alerte"""

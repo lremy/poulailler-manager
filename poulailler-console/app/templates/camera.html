@@ -1,6 +1,12 @@
+{% if activated %}
 <div class="Ta(l)">
     Dernière image : {{ last_capture }}
 </div>
 <div class="Ta(c)">
     <img src="{{ capture_url }}" class="H(150px)">
 </div>
+{% else %}
+<div class="Ta(l)">
+    Caméra injoignable
+</div>
+{% endif %}

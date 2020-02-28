@@ -102,7 +102,8 @@ def url_camera():
     capture_url = camera.capture()
     template_data = {
         'last_capture' : camera.last_capture,
-        'capture_url' : capture_url
+        'capture_url' : capture_url,
+        'activated' : camera.activated
     }
     return render_template('camera.html', **template_data)
 

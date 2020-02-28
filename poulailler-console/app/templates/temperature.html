@@ -1,3 +1,4 @@
 <div class="Ta(l)">
-    Température intérieure : {{ temp_int }}°<br/> Température extérieure : {{ temp_ext }}°
+    Température intérieure : {% if not temp_int_activated %} injoignable {% else %} {{ temp_int }}° {% endif %}
+    <br/> Température extérieure : {% if not temp_ext_activated %} injoignable {% else %} {{ temp_ext }}° {% endif %}
 </div>

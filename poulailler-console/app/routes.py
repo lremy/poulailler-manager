@@ -90,7 +90,9 @@ def url_abreuvoir():
 def url_temperature():
     template_data = {
         'temp_int' : temp_int.read_temperature(),
-        'temp_ext' : temp_ext.read_temperature()
+        'temp_int_activated' : temp_int.is_activated(),
+        'temp_ext' : temp_ext.read_temperature(),
+        'temp_ext_activated' : temp_ext.is_activated()
     }
     return render_template('temperature.html', **template_data)
 

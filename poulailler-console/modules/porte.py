@@ -12,7 +12,7 @@ class Porte:
         self.module_name = "porte"
         self.CONF_FILE = self.module_name
         self.stepper = stepper
-        self.max_rotation = 2500
+        self.max_rotation = 2600
         self.pin_haut = pin_haut
         self.pin_bas = pin_bas
         GPIO.setup(pin_haut,GPIO.IN,pull_up_down = GPIO.PUD_UP)
@@ -29,28 +29,28 @@ class Porte:
 
     def open(self):
         """ouvre la porte"""
-        i = self.max_rotation * 1.01
-        while not (self.is_opened() or i == 0):
-            self.stepper.forward_step()
-            i = i - 1
-        if i == 0: # la porte n'est pas arrivee jusqu'en haut
+        for i in range(self.max_rotation):
+            self.stepper.moveOnePeriod(1)
+            if self.is_opened():
+                break
+        if i < self.max_rotation: # la porte n'est pas arrivee jusqu'en haut
             Alerteur().add_alert(self.module_name,"La porte n'est pas ouverte entierement.")
         else:
             Alerteur().remove_alert(self.module_name)
-        self.stepper.stop_motor()
+        #self.stepper.stop_motor()
         self.write_state("open")
         
     def close(self):
         """ferme la porte"""
-        i = self.max_rotation * 1.01
-        while not (self.is_closed() or i == 0):
-            self.stepper.backward_step()
-            i = i - 1
-        if i == 0: # la porte n'est pas arrivee jusqu'en bas
+        for i in range(self.max_rotation):
+            self.stepper.moveOnePeriod(0)
+            if self.is_closed():
+                break
+        if i < self.max_rotation: # la porte n'est pas arrivee jusqu'en bas
             Alerteur().add_alert(self.module_name,"La porte n'est pas fermee entierement.")
         else:
             Alerteur().remove_alert(self.module_name)
-        self.stepper.stop_motor()
+        #self.stepper.stop_motor()
         self.write_state("close")
 
     def read_config(self):
@@ -68,7 +68,6 @@ class Porte:
         else:
             self.close_last_date = datetime.now(tzlocal()).strftime("%Y-%m-%d %H:%M:%S")
         self.write_config()
-        
     
     def write_config(self):
         """ecrit la configuration dans le fichier de configuration"""
@@ -88,38 +87,25 @@ class Stepper:
     """classe de pilotage d'un Stepper"""
     def __init__(self, pin_a1, pin_a2, pin_b1, pin_b2):
         """initialise les 4 pins de pilotage du stepper"""
-        self.p_a1 = pin_a1
-        self.p_a2 = pin_a2
-        self.p_b1 = pin_b1
-        self.p_b2 = pin_b2
-        self.delay = 0.005
-        GPIO.setup(self.p_a1, GPIO.OUT)
-        GPIO.setup(self.p_a2, GPIO.OUT)
-        GPIO.setup(self.p_b1, GPIO.OUT)
-        GPIO.setup(self.p_b2, GPIO.OUT)
+        self.delay = 0.003
+        self.motorPins = (pin_a1, pin_a2, pin_b1, pin_b2)    #define pins connected to four phase ABCD of stepper motor
+        for i in range(4):
+            GPIO.setup(self.motorPins[i], GPIO.OUT)
+        self.CCWStep = (0x01,0x02,0x04,0x08) #define power supply order for coil for rotating anticlockwise
+        self.CWStep = (0x08,0x04,0x02,0x01)  #define power supply order for coil for rotating clockwise
 
-    def forward_step(self):
-        """fait avancer le stepper"""
-        self.set_stepper(1, 0, 1, 0)
-        self.set_stepper(0, 1, 1, 0)
-        self.set_stepper(0, 1, 0, 1)
-        self.set_stepper(1, 0, 0, 1)
-
-    def backward_step(self):
-        """fait reculer le stepper"""
-        self.set_stepper(1, 0, 0, 1)
-        self.set_stepper(0, 1, 0, 1)
-        self.set_stepper(0, 1, 1, 0)
-        self.set_stepper(1, 0, 1, 0)
-    
     def stop_motor(self):
         """arrete le moteur"""
-        self.set_stepper(0, 0, 0, 0)
+        for i in range(4):
+            GPIO.output(self.motorPins[i],GPIO.LOW)
 
-    def set_stepper(self, in1, in2, in3, in4):
-        """definit les valeurs des pins pour changer la position du stepper"""
-        GPIO.output(self.p_a1, in1)
-        GPIO.output(self.p_a2, in2)
-        GPIO.output(self.p_b1, in3)
-        GPIO.output(self.p_b2, in4)
-        time.sleep(self.delay)
+    #as for four phase stepping motor, four steps is a cycle. the function is used to drive the stepping motor clockwise or anticlockwise to take four steps
+    def moveOnePeriod(self,direction):
+        print(self.delay)
+        for j in range(0,4,1):      #four steps of the cycle
+            for i in range(0,4,1):  #cycle through 4 pins
+                if (direction == 1):#power supply order clockwise
+                    GPIO.output(self.motorPins[i],((self.CCWStep[j] == 1<<i) and GPIO.HIGH or GPIO.LOW))
+                else :              #power supply order anticlockwise
+                    GPIO.output(self.motorPins[i],((self.CWStep[j] == 1<<i) and GPIO.HIGH or GPIO.LOW))
+            time.sleep(self.delay)

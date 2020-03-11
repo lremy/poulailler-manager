@@ -53,11 +53,15 @@ def url_porte():
         img_etat_title = "Porte fermee"
         img_action = "ouvrir"
         img_action_title = "Ouvrir la porte"
+        Alerteur().remove_alert(porte.module_name)
     elif not porte.is_opened():
         # la porte n'est pas ouverte = porte en deplacement
         img_etat = "en-cours"
         img_etat_title = "En cours de deplacement..."
         running = True
+    else:
+        # porte ouverte
+        Alerteur().remove_alert(porte.module_name)
     template_data = {
         'running' : running,
         'img_etat' : url_for("static", filename="img/porte-" + img_etat + ".png"),

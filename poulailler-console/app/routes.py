@@ -5,6 +5,7 @@ from modules.porte import Porte, Stepper
 from modules.abreuvoir import Abreuvoir
 from modules.temperature import Temperature
 from modules.camera import Camera
+from modules.camera_usb import Camera_usb
 from modules.conf import read_conf
 from modules.alerte import Alerteur
 
@@ -19,6 +20,7 @@ abreuvoir = Abreuvoir(CFG['ABREUVOIR_PIN_VIDE'],CFG['ABREUVOIR_PIN_MEDIUM'],CFG[
 temp_ext = Temperature(CFG['TEMP_ID_EXT'])
 temp_int = Temperature(CFG['TEMP_ID_INT'])
 camera = Camera(CFG['CAMERA_WIDTH'],CFG['CAMERA_HEIGHT'])
+camera_usb = Camera_usb(CFG['CAMERA_WIDTH'],CFG['CAMERA_HEIGHT'])
 
 # page par defaut, redirection vers la page principale
 @app.route('/')
@@ -108,6 +110,17 @@ def url_camera():
         'last_capture' : camera.last_capture,
         'capture_url' : capture_url,
         'activated' : camera.activated
+    }
+    return render_template('camera.html', **template_data)
+
+# module camera-usb
+@app.route('/camera-usb', methods= ['GET'])
+def url_camera_usb():
+    capture_url = camera_usb.capture()
+    template_data = {
+        'last_capture' : camera_usb.last_capture,
+        'capture_url' : capture_url,
+        'activated' : camera_usb.activated,
     }
     return render_template('camera.html', **template_data)
 

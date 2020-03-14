@@ -3,3 +3,4 @@ __pycache__
 poulailler-console/app/static/img/camera*.jpg
 RaspberryPi-configuration/wpa_supplicant-*.conf
 Conception/logiciel.asta
+.vscode

@@ -12,8 +12,10 @@
     <script>
         poulailler.add_module("{{ url_for('url_porte') }}", "porte", "Porte");
         poulailler.add_module("{{ url_for('url_abreuvoir') }}", "abreuvoir", "Abreuvoir");
+        poulailler.add_module("{{ url_for('url_batterie') }}", "batterie", "Batterie");
+        poulailler.add_module("{{ url_for('url_luminosite') }}", "luminosite", "Luminosité");
         poulailler.add_module("{{ url_for('url_temperature') }}", "temperature", "Températures");
-        poulailler.add_module("{{ url_for('url_camera_usb') }}", "camera", "Caméra");
+        //poulailler.add_module("{{ url_for('url_camera') }}", "camera", "Caméra");
         poulailler.add_module("{{ url_for('url_alertes') }}", "alertes", "Alertes en cours");
     </script>
 </body>

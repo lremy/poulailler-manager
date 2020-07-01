@@ -4,6 +4,8 @@ from dateutil.tz import *
 from modules.conf import read_conf, write_conf
 from os import listdir, remove
 from subprocess import run, PIPE
+from RPi import GPIO
+import time
 
 class Camera():
     """classe de pilotage de la caméra du Raspberry Pi"""
@@ -16,18 +18,25 @@ class Camera():
         self.CONF_FILE = "camera"
         self.width = width
         self.height = height
+        self.pin_led = 17
+        GPIO.setup(self.pin_led,GPIO.OUT)
+        GPIO.output(self.pin_led,GPIO.LOW)
         self.read_config()
     
     def capture(self):
         """capture une image; renvoie la dernière image capturée"""
         if not self.activated:
             return None
+        GPIO.output(self.pin_led,GPIO.HIGH)
+        time.sleep(1)
         self.camera.resolution = (self.width, self.height)
         date = datetime.now(tzlocal())
         self.last_capture = date.strftime("%Y-%m-%d %H:%M:%S")
         self.last_image = self.capture_path + "camera-{}.jpg".format(date.strftime("%Y%m%d-%H%M%S"))
         self.camera.capture("app/" + self.last_image)
         self.write_config()
+        time.sleep(1)
+        GPIO.output(self.pin_led,GPIO.LOW)
         # supprime la plus ancienne image s'il y a plus de 5 images
         images = list(f for f in listdir("app/" + self.capture_path) if f.startswith("camera-"))
         images.sort()

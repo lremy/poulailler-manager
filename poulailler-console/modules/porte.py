@@ -31,7 +31,7 @@ class Porte:
         """ouvre la porte"""
         for i in range(self.max_rotation):
             self.stepper.moveOnePeriod(1)
-            if self.is_opened():
+            if self.is_closed():
                 break
         if i < self.max_rotation: # la porte n'est pas arrivee jusqu'en haut
             Alerteur().add_alert(self.module_name,"La porte n'est pas ouverte entierement.")
@@ -101,10 +101,9 @@ class Stepper:
 
     #as for four phase stepping motor, four steps is a cycle. the function is used to drive the stepping motor clockwise or anticlockwise to take four steps
     def moveOnePeriod(self,direction):
-        print(self.delay)
-        for j in range(0,4,1):      #four steps of the cycle
-            for i in range(0,4,1):  #cycle through 4 pins
-                if (direction == 1):#power supply order clockwise
+        for j in range(0,4,1):      #cycle for power supply order
+            for i in range(0,4,1):  #assign to each pin, a total of 4 pins
+                if direction == 1: #power supply order clockwise
                     GPIO.output(self.motorPins[i],((self.CCWStep[j] == 1<<i) and GPIO.HIGH or GPIO.LOW))
                 else :              #power supply order anticlockwise
                     GPIO.output(self.motorPins[i],((self.CWStep[j] == 1<<i) and GPIO.HIGH or GPIO.LOW))

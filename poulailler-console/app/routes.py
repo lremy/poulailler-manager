@@ -3,6 +3,8 @@ from app import app
 from RPi import GPIO
 from modules.porte import Porte, Stepper
 from modules.abreuvoir import Abreuvoir
+from modules.batterie_smbus import Batterie
+from modules.luminosite_smbus import Luminosite
 from modules.temperature import Temperature
 from modules.camera import Camera
 from modules.camera_usb import Camera_usb
@@ -17,6 +19,8 @@ CFG = read_conf("global")
 stepper = Stepper(CFG['PORTE_STEPPER_1'],CFG['PORTE_STEPPER_2'],CFG['PORTE_STEPPER_3'],CFG['PORTE_STEPPER_4'])
 porte = Porte(stepper,CFG['PORTE_PIN_BAS'],CFG['PORTE_PIN_HAUT'])
 abreuvoir = Abreuvoir(CFG['ABREUVOIR_PIN_VIDE'],CFG['ABREUVOIR_PIN_MEDIUM'],CFG['ABREUVOIR_PIN_PLEIN'])
+batterie = Batterie()
+luminosite = Luminosite()
 temp_ext = Temperature(CFG['TEMP_ID_EXT'])
 temp_int = Temperature(CFG['TEMP_ID_INT'])
 camera = Camera(CFG['CAMERA_WIDTH'],CFG['CAMERA_HEIGHT'])
@@ -91,6 +95,30 @@ def url_abreuvoir():
     }
     return render_template('abreuvoir.html', **template_data)
 
+# module batterie_smbus
+@app.route('/batterie', methods= ['GET'])
+def url_batterie():
+    batterie.read_level()
+    level = round(batterie.last_level * 150 / batterie.max,0)
+    template_data = {
+        'last_level' : (level,20)[level < 20],
+        'last_level_date' : batterie.last_level_date,
+        'last_level_label' : str(batterie.last_level) + " (" + str(round(batterie.last_level * 100 / batterie.max,2)) + "%)"
+    }
+    return render_template('batterie.html', **template_data)
+
+# module luminosite_smbus
+@app.route('/luminosite', methods= ['GET'])
+def url_luminosite():
+    luminosite.read_level()
+    level = round(luminosite.last_level * 140,0)
+    template_data = {
+        'last_level' : (level,20)[level < 20],
+        'last_level_date' : luminosite.last_level_date,
+        'last_level_label' : str(round(luminosite.last_level * 100,2)) + "%"
+    }
+    return render_template('luminosite.html', **template_data)
+
 # module temperature
 @app.route('/temperature', methods= ['GET'])
 def url_temperature():
@@ -132,3 +160,4 @@ def url_alertes():
     }
     return render_template('alertes.html', **template_data)
 
+from RPi import GPIO

@@ -1,0 +1,11 @@
+[Unit]
+Description=Porte automatique poulailler
+After=network.target
+
+[Service]
+ExecStart=/home/pi/poulailler-console/porte_auto.sh
+Restart=always
+User=pi
+
+[Install]
+WantedBy=multi-user.target
